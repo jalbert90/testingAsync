@@ -7,11 +7,20 @@ namespace testingAsync
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            ExecuteSync();
-            ExecuteAsync();
-            ExecuteSync();
+            // ExecuteSync();
+            // ExecuteAsync();
+            // ExecuteSync();
+
+            //var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            //await RunDownloadParallelAsync();
+
+            //watch.Stop();
+            //var elapsedMs = watch.ElapsedMilliseconds;
+
+            //Console.WriteLine("Total execution time: " + elapsedMs);
         }
 
         private static void ExecuteSync()
@@ -30,7 +39,8 @@ namespace testingAsync
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
-            await RunDownloadAsync();
+            // await RunDownloadAsync();
+            await RunDownloadParallelAsync();
 
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
