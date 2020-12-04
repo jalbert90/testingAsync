@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace testingAsync
 {
@@ -9,6 +10,8 @@ namespace testingAsync
         static void Main(string[] args)
         {
             ExecuteSync();
+            ExecuteAsync();
+            ExecuteSync();
         }
 
         private static void ExecuteSync()
@@ -16,6 +19,18 @@ namespace testingAsync
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             RunDownloadSync();
+
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+
+            Console.WriteLine("Total execution time: " + elapsedMs);
+        }
+
+        private static async Task ExecuteAsync()
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            await RunDownloadAsync();
 
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
@@ -48,6 +63,35 @@ namespace testingAsync
             }
         }
 
+        private static async Task RunDownloadAsync()
+        {
+            List<string> websites = PrepData();
+
+            foreach (string site in websites)
+            {
+                WebsiteDataModel results = await Task.Run(() => DownloadWebsite(site));
+                ReportWebsiteInfo(results);
+            }
+        }
+
+        private static async Task RunDownloadParallelAsync()
+        {
+            List<string> websites = PrepData();
+            List<Task<WebsiteDataModel>> tasks = new List<Task<WebsiteDataModel>>();
+
+            foreach (string site in websites)
+            {
+                tasks.Add(Task.Run(() => DownloadWebsite(site)));
+            }
+
+            var results = await Task.WhenAll(tasks);
+
+            foreach (var item in results)
+            {
+                ReportWebsiteInfo(item);
+            }
+        }
+
         private static WebsiteDataModel DownloadWebsite(string websiteURL)
         {
             WebsiteDataModel output = new WebsiteDataModel();
@@ -61,7 +105,7 @@ namespace testingAsync
 
         private static void ReportWebsiteInfo(WebsiteDataModel data)
         {
-            Console.WriteLine(data.WebsiteURL + " downloaded: " + data.WebsiteData.Length + "characters long.");
+            Console.WriteLine(data.WebsiteURL + " downloaded: " + data.WebsiteData.Length + " characters long.");
         }
     }
 }
