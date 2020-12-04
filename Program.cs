@@ -10,7 +10,7 @@ namespace testingAsync
         static async Task Main(string[] args)
         {
             // ExecuteSync();
-            // ExecuteAsync();
+            await ExecuteAsync();
             // ExecuteSync();
 
             //var watch = System.Diagnostics.Stopwatch.StartNew();
