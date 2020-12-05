@@ -91,7 +91,8 @@ namespace testingAsync
 
             foreach (string site in websites)
             {
-                tasks.Add(Task.Run(() => DownloadWebsite(site)));
+                //tasks.Add(Task.Run(() => DownloadWebsite(site))); // Use Task.Run(lamda) if no control over method
+                tasks.Add(DownloadWebsiteAsync(site));  // Use this if control over method is had
             }
 
             var results = await Task.WhenAll(tasks);
@@ -109,6 +110,17 @@ namespace testingAsync
 
             output.WebsiteURL = websiteURL;
             output.WebsiteData = client.DownloadString(websiteURL);
+
+            return output;
+        }
+
+        private static async Task<WebsiteDataModel> DownloadWebsiteAsync(string websiteURL)
+        {
+            WebsiteDataModel output = new WebsiteDataModel();
+            WebClient client = new WebClient();
+
+            output.WebsiteURL = websiteURL;
+            output.WebsiteData = await client.DownloadStringTaskAsync(websiteURL); // Built-in
 
             return output;
         }
