@@ -7,10 +7,10 @@ namespace testingAsync
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             // ExecuteSync();
-            await ExecuteAsync();
+            ExecuteAsync().Wait();
             // ExecuteSync();
 
             //var watch = System.Diagnostics.Stopwatch.StartNew();
