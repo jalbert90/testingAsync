@@ -11,16 +11,6 @@ namespace testingAsync
         {
             // ExecuteSync();
             ExecuteAsync().Wait();
-            // ExecuteSync();
-
-            //var watch = System.Diagnostics.Stopwatch.StartNew();
-
-            //await RunDownloadParallelAsync();
-
-            //watch.Stop();
-            //var elapsedMs = watch.ElapsedMilliseconds;
-
-            //Console.WriteLine("Total execution time: " + elapsedMs);
         }
 
         private static void ExecuteSync()
